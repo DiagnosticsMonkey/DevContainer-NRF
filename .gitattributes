@@ -1,0 +1,8 @@
+# Leave all files _detected_ as binary untouched...
+# TODO add binary exceptions
+*               text=auto
+
+# These files are text (crlf -> lf)
+*.gitattributes text
+.gitignore      text
+*.md            text diff=markdown
