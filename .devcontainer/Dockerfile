@@ -163,8 +163,14 @@ EOT
 ENTRYPOINT [ "nrfutil", "toolchain-manager", "launch", "/bin/bash", "--", "/root/entry.sh" ]
 COPY ../entry.sh /root/entry.sh
 
-# Clean bash prompt of some hash gore
-RUN echo 'PS1="\[\033[01;32m\]\u@docker\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "' >> ~/.bashrc
+RUN pip3 install -r /${WORKDIR}/zephyr/scripts/requirements.txt
+
+# Clean bash prompt of some hash gore and add git branch
+RUN echo 'parse_git_branch() {' >> ~/.bashrc && \
+    echo '  git branch 2>/dev/null | grep '\''^\*'\'' | sed -e '\''s/^\* //'\'' || true' >> ~/.bashrc && \
+    echo '}' >> ~/.bashrc && \
+    echo 'PS1="\[\033[01;32m\]\u@docker\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\033[01;33m\](\$(parse_git_branch))\[\033[00m\]\$ "' >> ~/.bashrc
+
 # Source on start via bashrc
 RUN echo 'source /${WORKDIR}/zephyr/zephyr-env.sh' >> ~/.bashrc
 
@@ -173,9 +179,8 @@ RUN echo 'echo -e "\033[01;32mWelcome from Diagnostics Monkey\033[00m"' >> ~/.ba
 RUN echo 'echo -e "\033[01;32mINF: ZEPHYR is located -> ${ZEPHYR_BASE}\033[00m"' >> ~/.bashrc
 RUN echo 'echo "     e.g. to build -> \"west build -b nrf5340dk_nrf5340_cpuapp ${ZEPHYR_BASE}/samples/basic/blinky --pristine\""' >> ~/.bashrc
 
-RUN cd /${WORKDIR}/zephyr
-RUN west zephyr-export
-RUN pip3 install -r /${WORKDIR}/zephyr/scripts/requirements.txt
+# Mark the project directory as a safe Git directory
+RUN git config --global --add safe.directory /workspaces/project
 
 ###
 

@@ -1,6 +1,9 @@
 # Leave all files _detected_ as binary untouched...
 # TODO add binary exceptions
-*               text=auto
+*               text=auto eol=lf
+
+*.{cmd,[cC][mM][dD]} text eol=crlf
+*.{bat,[bB][aA][tT]} text eol=crlf
 
 # These files are text (crlf -> lf)
 *.gitattributes text
