@@ -1,7 +1,7 @@
 {
-	"name": "NRF",
+    "name": "NRF",
     "dockerFile": "Dockerfile",
-	"remoteUser": "root",
+    "remoteUser": "root",
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/project,type=bind",
     "workspaceFolder": "/workspaces/project",
     "build": {
