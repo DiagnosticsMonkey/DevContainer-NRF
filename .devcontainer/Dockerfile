@@ -92,7 +92,7 @@ EOT
 # Install Python dependencies
 RUN pip3 install --no-cache-dir west nrf-regtool>=5.3.0 && \
     pip3 install --no-cache-dir pygobject && \
-	pip3 check
+    pip3 check
 
 # Install toolchain
 # Make nrfutil install in a shared location, because when used with GitHub
